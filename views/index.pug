@@ -1,71 +1,79 @@
-doctype html
-html(lang='en')
-  head
-    meta(charset='UTF-8')
-    meta(name='viewport', content='width=device-width, initial-scale=1.0')
-    link(rel='stylesheet', href='public/css/main.css')
-    title Animated Dropdown Menu
-    script(src='https://www.gstatic.com/firebasejs/10.5.2/firebase-app.js;')
-    script(src='https://www.gstatic.com/firebasejs/10.5.2/firebase-database.js;')
-  body.subpage
-    .content
-      h1
-        | This site has been visited 
-        span##view_count_text
-        |  times.
-      .menu
-        div
-          a#home.homeLink(href='/') Home
-        .dropdown
-          a.services Services
-          .dropdown-content.hidden(style='display: none')
-            a.service(href='/service1', onclick='hidemenu()') Service 1
-            a.service(href='/service2', onclick='hidemenu()') Service 2
-            a.service(href='/service3', onclick='hidemenu()') Service 3
-        div
-          a.about(href='#') About
-        div
-          a.contact(href='#') Contact
-    .main
-      .mainContent
-        #homeContent HOME CONTENT
-      img.code(src='https://cdn.glitch.global/79f4bbec-285c-4a73-90c3-8d4725ed1def/code1.jpeg?v=1699107700829')
-    script(src='https://code.jquery.com/jquery-3.6.0.min.js')
-    script(src='public/dropdown.js')
-    script(type='application/javascript').
-      const firebaseConfig = {
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="stylesheet" href="public/css/main.css"/>
+    <title>Animated Dropdown Menu</title>
+    <script src="https://www.gstatic.com/firebasejs/10.5.2/firebase-app.js;"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.5.2/firebase-database.js;"></script>
+  </head>
+  <body class="subpage">
+    <p id="view_count_text"></p>
+    <div class="content">
+      <h1>This site has been visited <span id="visits"></span> times.</h1>
+      <div class="menu">
+        <div><a href="/" class="homeLink" id="home">Home</a></div>
+        <div class="dropdown">
+          <a class="services">Services</a>
+          <div class="dropdown-content hidden" style="display: none">
+            <a href="/service1" class="service" onclick="hidemenu()">Service 1</a>
+            <a href="/service2" class="service" onclick="hidemenu()">Service 2</a>
+            <a href="/service3" class="service" onclick="hidemenu()">Service 3</a>
+          </div>
+        </div>
+        <div><a href="#" class="about">About</a></div>
+        <div><a href="#" class="contact">Contact</a></div>
+      </div>
+    </div>
+    <div class="main">
+      <div class="mainContent">
+        <div id="homeContent">HOME CONTENT</div>
+      </div>
+      <img src="https://cdn.glitch.global/79f4bbec-285c-4a73-90c3-8d4725ed1def/code1.jpeg?v=1699107700829" class="code"/>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="public/dropdown.js"></script>
+  </body>
+  <script type="application/javascript">
+    const firebaseConfig = {
       apiKey: "AIzaSyChAmgrt6LXIwWj9ZdI0ZHgstrjqllYuvA",
       authDomain: "webcntr-f1d34.firebaseapp.com",
       projectId: "webcntr-f1d34",
       storageBucket: "webcntr-f1d34.appspot.com",
       messagingSenderId: "1001891577840",
       appId: "1:1001891577840:web:ae9a84d6d4312d0c2ba735",
-      };
-      const app = initializeApp(firebaseConfig);
-      function get_viewers_ip(json) {
+    };
+    const app = initializeApp(firebaseConfig);
+    function get_viewers_ip(json) {
       viewers_ip = json.ip;
       count_view(viewers_ip);
-      }
-      function count_view(viewers_ip) {
+    }
+    function count_view(viewers_ip) {
       var views;
       var ip_to_string = viewers_ip.toString();
       for (var i, i = 0; i < ip_to_string.length; i++) {
-      ip_to_string = ip_to_string.replace(".", "-");
+        ip_to_string = ip_to_string.replace(".", "-");
       }
       firebase
-      .database()
-      .ref()
-      .child("page_views/" + ip_to_string)
-      .set({
-      viewers_ip: viewers_ip,
-      });
+        .database()
+        .ref()
+        .child("page_views/" + ip_to_string)
+        .set({
+          viewers_ip: viewers_ip,
+        });
       firebase
-      .database()
-      .ref()
-      .child("page_views")
-      .on("value", function (snapshot) {
-      views = snapshot.numChildren();
-      document.getElementById("view_count_text").innerHTML = "";
-      });
-      }
-    script(type='application/javascript', src='https://api.ipify.org?format=jsonp&callback=get_viewers_ip')
+        .database()
+        .ref()
+        .child("page_views")
+        .on("value", function (snapshot) {
+          views = snapshot.numChildren();
+          document.getElementById("view_count_text").innerHTML = "";
+        });
+    }
+  </script>
+  <script
+    type="application/javascript"
+    src="https://api.ipify.org?format=jsonp&callback=get_viewers_ip"
+  ></script>
+</html>
